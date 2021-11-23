@@ -26,8 +26,8 @@ public:
 	double read(int, int);
 	static matrix transpose(const matrix);
 	static matrix identity(int);
-	static matrix rowToVector(matrix, int);
-	static matrix columnToVector(matrix, int);
+	static matrix rowToVector(const matrix, int);
+	static matrix columnToVector(const matrix, int);
 	//static matrix vectorize(matrix);
 	
 public:
@@ -37,10 +37,12 @@ public:
 	matrix operator - (const matrix&);
 	matrix operator * (const matrix&);
 	matrix operator * (const double&);
+	matrix operator | (const matrix&); // Augment operator
 	matrix& operator *= (const matrix&);
 	matrix& operator *= (const double&);
 	matrix& operator += (const matrix&);
 	matrix& operator -= (const matrix&);
+	matrix& operator |= (const matrix&);
 
 };
 #endif

@@ -214,11 +214,28 @@ matrix matrix::transpose(const matrix in) {
 matrix matrix::identity(int d) {
 	matrix I(d, d, 0);
 	for (int i = 0;i < d;i++) {
-		I.assign(i, i, 1);
+		I.grid[i][i] = 1;
 	}
 	return I;
 }
 
+// Row to vector
+matrix matrix::rowToVector(const matrix in, int r) {
+	matrix row(1, in.cols);
+	for (int i = 0; i < in.cols;i++) {
+		row.grid[1][i] = in.grid[r][i];
+	}
+	return row;
+}
+
+// Column to vector
+matrix matrix::columnToVector(const matrix in, int r) {
+	matrix col(in.rows, 1);
+	for (int i = 0; i < in.rows;i++) {
+		col.grid[i][1] = in.grid[i][r];
+	}
+	return col;
+}
 // Operators
 // Equals
 matrix& matrix::operator = (const matrix& B) {
@@ -304,10 +321,9 @@ matrix matrix::operator * (const matrix& B) {
 			}
 		}
 	}
-	*this = product;
-	return *this;
+	return product;
 }
-// FIX
+
 matrix& matrix::operator *= (const matrix& B) {
 	if (cols != B.rows) {
 		throw domain_error("Incompatible matrix dimensions.");
@@ -322,6 +338,8 @@ matrix& matrix::operator *= (const matrix& B) {
 			}
 		}
 	}
+	*this = product;
+	return *this;
 }
 
 matrix& matrix::operator *= (const double& d) {
@@ -332,6 +350,7 @@ matrix& matrix::operator *= (const double& d) {
 	}
 	return *this;
 }
+
 matrix& matrix::operator -= (const matrix& B) {
 	for (int r = 0; r < cols;r++) {
 		for (int c = 0; c < rows;c++) {
@@ -340,11 +359,54 @@ matrix& matrix::operator -= (const matrix& B) {
 	}
 	return *this;
 }
+
 matrix& matrix::operator += (const matrix& B) {
 	for (int r = 0; r < cols;r++) {
 		for (int c = 0; c < rows;c++) {
 			this->grid[r][c] += B.grid[r][c];
 		}
 	}
+	return *this;
+}
+
+// Augment
+matrix matrix::operator | (const matrix& B) {
+	if (rows != B.rows) {
+		throw domain_error("Incompatible matrix dimensions.");
+	}
+
+	matrix sum(rows, cols + B.cols);
+
+	for (int r = 0;r < rows;r++) {
+		for (int c = 0;c < cols;c++) {
+			sum.assign(r, c, grid[r][c]);
+		}
+	}
+	for (int r = 0;r < B.rows;r++) {
+		for (int c = 0;c < B.cols;c++) {
+			sum.assign(r, cols + c, B.grid[r][c]);
+		}
+	}
+	return sum;
+}
+
+matrix& matrix::operator |= (const matrix& B) {
+	if (rows != B.rows) {
+		throw domain_error("Incompatible matrix dimensions.");
+	}
+
+	matrix sum(rows, cols+B.cols);
+
+	for (int r = 0;r < rows;r++) {
+		for (int c = 0;c < cols;c++) {
+			sum.assign(r, c, grid[r][c]);
+		}
+	}
+	for (int r = 0;r < B.rows;r++) {
+		for (int c = 0;c < B.cols;c++) {
+			sum.assign(r, cols + c, B.grid[r][c]);
+		}
+	}
+	*this = sum;
 	return *this;
 }
