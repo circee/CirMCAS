@@ -362,9 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Prerequisites
-*.d
-
 # Compiled Object files
 *.slo
 *.lo
