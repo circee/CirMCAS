@@ -7,26 +7,27 @@ int main() {
 	system("color 05");
 	random_device rd;
 	mt19937 gen(rd());
-	uniform_real_distribution<> distr(1.0, 10.0);
+	uniform_int_distribution<> distr(0, 20);
 
-	matrix a(200, 200);
-	a.fill(17.82822);
+	matrix a(10, 10);
 	for (int z = 0;z < a.getRows();z++) {
 		for (int w = 0;w < a.getColumns();w++) {
-			a.assign(z, w, (a.read(z, w) + distr(gen)));
+			a.assign(z, w, z+w);
 		}
 	}
-	a.print();
-	matrix b(200, 200, 5.122);
+
+	matrix b(10, 10);
 	for (int z = 0;z < b.getRows();z++) {
 		for (int w = 0;w < b.getColumns();w++) {
-			b.assign(z, w, (b.read(z, w) + distr(gen)));
+			b.assign(z, w, z+w);
 		}
 	}
+
+	b = b * 2;
+	b *= 2;
 	b.print();
 
-	matrix c = b*a;
-	c.print();
 	system("pause");
 	return 0;
 }
+

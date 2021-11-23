@@ -292,22 +292,59 @@ matrix matrix::operator * (const double& d) {
 // A*B matrix multiplicaiton yields a matrix of dimension A.rows x B.cols
 matrix matrix::operator * (const matrix& B) {
 
+	if (this->cols != B.rows) {
+		throw domain_error("Incompatible matrix dimensions.");
+	}
+	matrix product(this->rows, B.cols);
+	for (int Pr = 0; Pr < product.cols;Pr++) {
+		for (int Pc = 0; Pc < product.rows;Pc++) {
+			for (int u = 0; u < this->cols;u++) {
+				product.grid[Pr][Pc] += this->grid[Pr][u] * B.grid[u][Pc];
+				//cout << "Doing " << grid[Pr][u] << "x" << B.grid[u][Pc] << "\n";
+			}
+		}
+	}
+	*this = product;
+	return *this;
+}
+// FIX
+matrix& matrix::operator *= (const matrix& B) {
 	if (cols != B.rows) {
 		throw domain_error("Incompatible matrix dimensions.");
 	}
-	matrix product(rows, B.cols);
-	int sum;
-	for (int Pr = 0; Pr < product.cols;Pr++) {
-		for (int Pc = 0; Pc < product.rows;Pc++) {
-			sum = 0;
 
+	matrix product(rows, B.cols);
+	for (int Pr = 0; Pr < cols;Pr++) {
+		for (int Pc = 0; Pc < rows;Pc++) {
 			for (int u = 0; u < cols;u++) {
-				sum += grid[Pr][u] * B.grid[u][Pc];
+				product.grid[Pr][Pc] += grid[Pr][u] * B.grid[u][Pc];
 				//cout << "Doing " << grid[Pr][u] << "x" << B.grid[u][Pc] << "\n";
 			}
-			product.assign(Pr,Pc,sum);
 		}
 	}
+}
 
-	return product;
+matrix& matrix::operator *= (const double& d) {
+	for (int Pr = 0; Pr < cols;Pr++) {
+		for (int Pc = 0; Pc < rows;Pc++) {
+			this->grid[Pr][Pc] *= d;
+		}
+	}
+	return *this;
+}
+matrix& matrix::operator -= (const matrix& B) {
+	for (int r = 0; r < cols;r++) {
+		for (int c = 0; c < rows;c++) {
+			this->grid[r][c] -= B.grid[r][c];
+		}
+	}
+	return *this;
+}
+matrix& matrix::operator += (const matrix& B) {
+	for (int r = 0; r < cols;r++) {
+		for (int c = 0; c < rows;c++) {
+			this->grid[r][c] += B.grid[r][c];
+		}
+	}
+	return *this;
 }
