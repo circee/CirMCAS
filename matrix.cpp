@@ -2,12 +2,12 @@
 #include <iostream>
 #include <stdexcept>
 
+using namespace std;
+
 // Default Constructor
 matrix::matrix() {
 	rows = 1;
 	cols = 1;
-
-	cout << "Creating new " << rows << "x" << cols << " matrix.\n";
 
 	grid = new double* [rows];
 
@@ -27,8 +27,6 @@ matrix::matrix(const matrix& orig) {
 	rows = orig.rows;
 	cols = orig.cols;
 
-	cout << "Creating new " << rows << "x" << cols << " matrix.\n";
-
 	grid = new double* [rows];
 
 	for (int i = 0;i < rows;++i) {
@@ -44,11 +42,8 @@ matrix::matrix(const matrix& orig) {
 }
 // Init as a zero matrix
 matrix::matrix(int m, int n) {
-
 	rows = m;
 	cols = n;
-
-	cout << "Creating new " << rows << "x" << cols << " matrix.\n";
 
 	grid = new double* [rows];
 
@@ -56,18 +51,12 @@ matrix::matrix(int m, int n) {
 		grid[i] = new double[cols];
 	}
 	fill(0);
-	//for (int r = 0; r < rows;++r) {
-	//	for (int c = 0;c < cols;++c) {
-	//		grid[r][c] = 0;
-	//	}
-	//}
 }
 
 // Square matrix
 matrix::matrix(int dim) {
 	rows = dim;
 	cols = dim;
-	cout << "Creating new " << rows << "x" << cols << " matrix.\n";
 
 	grid = new double* [rows];
 	for (int i = 0;i < rows;++i) {
@@ -75,19 +64,12 @@ matrix::matrix(int dim) {
 	}
 
 	fill(0);
-	//for (int r = 0; r < rows;++r) {
-	//	for (int c = 0;c < cols;++c) {
-	//		grid[r][c] = 0;
-	//	}
-	//}
 }
 
 // Fill on init
 matrix::matrix(int m, int n, double d) {
 	rows = m;
 	cols = n;
-
-	cout << "Creating new " << rows << "x" << cols << " matrix.\n";
 
 	grid = new double* [rows];
 
@@ -199,14 +181,6 @@ matrix matrix::transpose(const matrix in) {
 			trans.assign(c,r,in.grid[r][c]);
 		}
 	}
-	//trans.transpose();
-	/*
-	for (int r = 0; r < in.rows;r++) {
-		for (int c = 0;c < in.cols;c++) {
-			trans.assign(c, r, in.grid[r][c]);
-		}
-	}*/
-
 	return trans;
 }
 
@@ -236,6 +210,7 @@ matrix matrix::columnToVector(const matrix in, int r) {
 	}
 	return col;
 }
+
 // Operators
 // Equals
 matrix& matrix::operator = (const matrix& B) {
@@ -317,7 +292,6 @@ matrix matrix::operator * (const matrix& B) {
 		for (int Pc = 0; Pc < product.rows;Pc++) {
 			for (int u = 0; u < this->cols;u++) {
 				product.grid[Pr][Pc] += this->grid[Pr][u] * B.grid[u][Pc];
-				//cout << "Doing " << grid[Pr][u] << "x" << B.grid[u][Pc] << "\n";
 			}
 		}
 	}
@@ -334,7 +308,6 @@ matrix& matrix::operator *= (const matrix& B) {
 		for (int Pc = 0; Pc < rows;Pc++) {
 			for (int u = 0; u < cols;u++) {
 				product.grid[Pr][Pc] += grid[Pr][u] * B.grid[u][Pc];
-				//cout << "Doing " << grid[Pr][u] << "x" << B.grid[u][Pc] << "\n";
 			}
 		}
 	}

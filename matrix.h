@@ -1,7 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#pragma once
 
-using namespace std;
 class matrix
 {
 private:
@@ -28,7 +26,6 @@ public:
 	static matrix identity(int);
 	static matrix rowToVector(const matrix, int);
 	static matrix columnToVector(const matrix, int);
-	//static matrix vectorize(matrix);
 	
 public:
 	// Operators
@@ -37,7 +34,7 @@ public:
 	matrix operator - (const matrix&);
 	matrix operator * (const matrix&);
 	matrix operator * (const double&);
-	matrix operator | (const matrix&); // Augment operator
+	matrix operator | (const matrix&);
 	matrix& operator *= (const matrix&);
 	matrix& operator *= (const double&);
 	matrix& operator += (const matrix&);
@@ -45,4 +42,3 @@ public:
 	matrix& operator |= (const matrix&);
 
 };
-#endif
