@@ -11,22 +11,36 @@ struct Dim {
 
 void throwError(string str = "");
 
-matrix matrixFromFile(string fileName);
 string getFileName();
-Dim getMatrixDim(string fileName);
-string getString();
 
+matrix matrixFromFile(string fileName);
+void matrixToFile(string fileName, matrix outMatrix);
+
+Dim getMatrixDim(string fileName);
+
+string getString();
+bool yOrN();
 
 
 int main() {
 	system("color 05");
 
 	while (true) {
-		cout << "File: ";
+		cout << "Matrix file: ";
 		matrix myMatrix = matrixFromFile(getFileName());
 
 		myMatrix.transpose();
 		myMatrix.print();
+
+		cout << "Would you like to save this transpose? ";
+		if (yOrN()) {
+			cout << "Save as: ";
+			matrixToFile(getFileName(), myMatrix);
+			cout << "Saved!";
+		}
+
+		cout << "\n---------------------------------------------------------------------------\n";
+
 	}
 
 	system("pause");
@@ -100,4 +114,45 @@ void throwError(string errMsg) {
 	cout << "ERROR: " << errMsg << ". Program will now close.";
 	system("pause");
 	system("exit");
+}
+
+void matrixToFile(string fileName, matrix outMatrix) {
+	ofstream file;
+	file.open(fileName);
+
+	if (file) {
+		file << outMatrix.getRows() << ' ';
+		file << outMatrix.getColumns() << ' ';
+
+		for (int i = 0; i < outMatrix.getRows(); i++) {
+			for (int j = 0; j < outMatrix.getColumns(); j++) {
+				file << outMatrix.read(i,j) << ' '; // Will overload [] eventually 
+			}
+		}
+
+		file.close();
+	}
+	else {
+		throwError("Could not open matrix file");
+	}
+}
+
+bool yOrN() {
+	char ch;
+	cin >> ch;
+	cin.ignore(1000, '\n');
+	cout << "\n";
+
+	while (!(ch == 'Y' || ch == 'y' || ch == 'N' || ch == 'n')) {
+		cout << "\tPlease Y yes or N: ";
+		cin >> ch;
+		cin.ignore(1000, '\n');
+		cout << "\n";
+	}
+	if (ch == 'Y' || ch == 'y') {
+		return true;
+	}
+	else {
+		return false;
+	}
 }

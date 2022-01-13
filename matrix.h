@@ -17,11 +17,11 @@ public:
 	void print();
 	void fill(double);
 	void zero();
-	void assign(int, int, double);
+	void assign(int, int, double); // Will overload [] eventually 
 	void transpose();
 	int getRows();
 	int getColumns();
-	double read(int, int);
+	double read(int, int); // Will overload [] eventually 
 	static matrix transpose(const matrix);
 	static matrix identity(int);
 	static matrix rowToVector(const matrix, int);
