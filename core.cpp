@@ -4,11 +4,6 @@
 #include <fstream>
 using namespace std;
 
-struct Dim {
-	int m;
-	int n;
-};
-
 void throwError(string str = "");
 
 string getFileName();
@@ -16,7 +11,7 @@ string getFileName();
 matrix matrixFromFile(string fileName);
 void matrixToFile(string fileName, matrix outMatrix);
 
-Dim getMatrixDim(string fileName);
+matrix getMatrixDim(string fileName);
 
 string getString();
 bool yOrN();
@@ -53,8 +48,7 @@ matrix matrixFromFile(string fileName) {
 	int i = -2;
 	int j = 0, k = 0;
 
-	Dim matrixDim = getMatrixDim(fileName);
-	matrix newMatrix(matrixDim.m, matrixDim.n);
+	matrix newMatrix = getMatrixDim(fileName);
 
 	file.open(fileName);
 
@@ -94,16 +88,16 @@ string getFileName() {
 	return getString();
 }
 
-Dim getMatrixDim(string fileName) {
+matrix getMatrixDim(string fileName) {
 	ifstream file;
 	file.open(fileName);
 
 	if (file) {
-		Dim matrixDim;
-		file >> matrixDim.m;
-		file >> matrixDim.n;
+		int m,n;
+		file >> m;
+		file >> n;
 		file.close();
-		return matrixDim;
+		return matrix(m,n);
 	}
 	else {
 		throwError("Could not open matrix file");
